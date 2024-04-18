@@ -400,3 +400,7 @@ FodyWeavers.xsd
 *.sln.iml
 .vscode/settings.json
 dotnet-ai/tmp/Keys.cs
+.mono/registry/CurrentUser/software/microsoft/csdevkit/telemetry/persistentpropertybag/values.xml
+.mono/registry/CurrentUser/software/microsoft/csdevkit/telemetry/persistentpropertybag/microsoft.visualstudio.code.servicehost/values.xml
+.mono/registry/CurrentUser/software/microsoft/csdevkit/v1/pids/1645_133579560146286225/values.xml
+.mono/registry/CurrentUser/software/microsoft/sqmclient/values.xml

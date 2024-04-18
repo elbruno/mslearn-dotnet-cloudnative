@@ -1,22 +1,21 @@
-﻿@page "/products"
+﻿@page "/search"
 @using DataEntities
 @using Store.Services
 @inject ProductService ProductService
 @inject IConfiguration Configuration
 @attribute [StreamRendering(true)]
 
-<PageTitle>Products</PageTitle>
+<PageTitle>Search Products</PageTitle>
 
-<h1>Products</h1>
+<h1>Search Products</h1>
 
-<p>Here are some of our amazing outdoor products that you can purchase.</p>
+<p>Use AI to search some of our amazing outdoor products that you can purchase.</p>
 
 <!-- add a label , a textbox and a button to perform a smart search -->
 <div class="form-group">
     <label for="search">Search:</label>
     <input type="text" id="search" class="form-control" @bind="searchTerm" />
-    <button class="btn btn-primary" @onclick="Search">Search</button>
-    <input type="text" id="search" class="form-control" @bind="aiResponse" />    
+    <button class="btn btn-primary" @onclick="SearchWithAI">Search</button>
 </div>
 
 
@@ -56,13 +55,7 @@ else
     private string searchTerm;
     private string aiResponse;
 
-    protected override async Task OnInitializedAsync()
-    {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-        products = await ProductService.GetProducts();
-    }
-    private async Task Search(MouseEventArgs e)
+    private async Task SearchWithAI(MouseEventArgs e)
     {
         await Task.Delay(500);
         aiResponse = await ProductService.AISearch(searchTerm);

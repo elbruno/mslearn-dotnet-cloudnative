@@ -41,5 +41,29 @@ public class ProductService
 
 		return products ?? new List<Product>();
     }
+
+	public async Task<string> AISearch(string searchTerm)
+    {
+        string? aiResponse = null;
+		try
+		{
+	    	var response = await httpClient.GetAsync($"/api/aisearch/{searchTerm}");
+	    	var responseText = await response.Content.ReadAsStringAsync();
+
+			_logger.LogInformation($"Http status code: {response.StatusCode}");
+    	    _logger.LogInformation($"Http response content: {responseText}");
+
+		    if (response.IsSuccessStatusCode)
+		    {
+				aiResponse = response.Content.ToString();
+	   		 }
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Error during GetProducts.");
+		}
+
+		return aiResponse ?? "No response from AI.";
+    }
     
 }
