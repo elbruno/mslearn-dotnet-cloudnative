@@ -35,8 +35,4 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\tmp\Keys.cs" Link="Keys.cs" />
-  </ItemGroup>
-
 </Project>

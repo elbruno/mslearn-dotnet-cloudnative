@@ -1,5 +1,4 @@
-﻿using Keys;
-using Microsoft.SemanticKernel.Memory;
+﻿using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel;
 using Products.Data;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -24,9 +23,9 @@ public static class MemoryContext
 
         memoryBuilder = new MemoryBuilder();
         memoryBuilder.WithAzureOpenAITextEmbeddingGeneration(
-                AzureOpenAI.EmbeddingsModel,
-                 AzureOpenAI.Endpoint,
-                AzureOpenAI.ApiKey);
+                " AzureOpenAI EmbeddingsModel ",
+                 " AzureOpenAI Endpoint " ,
+                " AzureOpenAI ApiKey ");
         memoryBuilder.WithMemoryStore(new VolatileMemoryStore());
     }
 
