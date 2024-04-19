@@ -11,15 +11,6 @@
 
 <p>Here are some of our amazing outdoor products that you can purchase.</p>
 
-<!-- add a label , a textbox and a button to perform a smart search -->
-<div class="form-group">
-    <label for="search">Search:</label>
-    <input type="text" id="search" class="form-control" @bind="searchTerm" />
-    <button class="btn btn-primary" @onclick="Search">Search</button>
-    <input type="text" id="search" class="form-control" @bind="aiResponse" />    
-</div>
-
-
 @if (products == null)
 {
     <p><em>Loading...</em></p>
@@ -53,18 +44,10 @@ else
 @code {
     private List<Product>? products;
 
-    private string searchTerm;
-    private string aiResponse;
-
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
         products = await ProductService.GetProducts();
-    }
-    private async Task Search(MouseEventArgs e)
-    {
-        await Task.Delay(500);
-        aiResponse = await ProductService.AISearch(searchTerm);
     }
 }

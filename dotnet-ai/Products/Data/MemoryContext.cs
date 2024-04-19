@@ -21,11 +21,12 @@ public static class MemoryContext
         if (memoryBuilder != null)
             return;
 
+        var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
         memoryBuilder = new MemoryBuilder();
         memoryBuilder.WithAzureOpenAITextEmbeddingGeneration(
-                " AzureOpenAI EmbeddingsModel ",
-                 " AzureOpenAI Endpoint " ,
-                " AzureOpenAI ApiKey ");
+                config["text-embedding-ada-002"],
+                config["AZURE_OPENAI_ENDPOINT"],
+                config["AZURE_OPENAI_APIKEY"]);
         memoryBuilder.WithMemoryStore(new VolatileMemoryStore());
     }
 
