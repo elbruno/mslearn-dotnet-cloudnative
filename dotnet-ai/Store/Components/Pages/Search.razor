@@ -4,6 +4,7 @@
 @inject ProductService ProductService
 @inject IConfiguration Configuration
 @attribute [StreamRendering(true)]
+@rendermode InteractiveServer
 
 <PageTitle>Search Products</PageTitle>
 
@@ -21,7 +22,7 @@
 </div>
 
 @code {
-    private string searchTerm;
+    private string searchTerm = "";
     private string aiResponse = "This was the first request for this page. " + DateTime.Now.ToString("HH:mm:ss");   
 
     private async Task OnPost()
