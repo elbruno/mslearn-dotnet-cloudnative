@@ -11,26 +11,66 @@
 
 <h1>Search Products</h1>
 
-<p>Use AI to search some of our amazing outdoor products that you can purchase.</p>
+<p>Use AI to ask questions some of our amazing outdoor products that you can purchase.</p>
 
 <!-- add a label , a textbox and a button to perform a smart search -->
 <div class="form-group">
-    <label for="search">Search:</label>
-    <input css type="text" id="search" class="form-control" @bind="searchTerm" />
-    <button id="btnSearch" class="btn btn-primary" @onclick="OnPost">Search 32</button>
+    <label for="search">Type your question:</label>
+    
+    <!-- group the input and the button in an horizontal group -->
+    <div class="input-group" >
+        <input css type="text" id="search" class="form-control" @bind="searchTerm" />
+        <button id="btnSearch" class="btn btn-primary" @onclick="OnPost">Search 32</button>
+    </div>
 
-    <p>@aiResponse</p>
+    <!-- add a separator the responses -->
+    <hr />
+    <p>Response:</p>
+    <!-- create a paragrpah with a quote class style -->
+    <p class="quote">@aiResponse</p>
 </div>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <!-- Simulating images being hosted on a CDN -->
+                    <td><img height="80" width="80" src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@product.ImageUrl" /></td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     private string searchTerm = "";
-    private string aiResponse = "This was the first request for this page. " + DateTime.Now.ToString("HH:mm:ss");   
+    private List<Product>? products;
+    private string aiResponse = "";   
 
     private async Task OnPost()
     {
         await Task.Delay(500);
         var response = await ProductService.AISearch(searchTerm);
         aiResponse = response.Response;
+        products = response.Products;
         
     }
 }
