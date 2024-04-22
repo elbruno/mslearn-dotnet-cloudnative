@@ -1,4 +1,5 @@
 ﻿@page "/search"
+@using AIEntities
 @using DataEntities
 @using Store.Services
 @inject ProductService ProductService
@@ -28,6 +29,8 @@
     private async Task OnPost()
     {
         await Task.Delay(500);
-        aiResponse = await ProductService.AISearch(searchTerm);
+        var response = await ProductService.AISearch(searchTerm);
+        aiResponse = response.Response;
+        
     }
 }

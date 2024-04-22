@@ -14,7 +14,7 @@ public class AISearchResponse
 }
 
 
-[JsonSerializable(typeof(List<AISearchResponse>))]
+[JsonSerializable(typeof(AISearchResponse))]
 public sealed partial class AISearchResponseSerializerContext : JsonSerializerContext
 {
 }

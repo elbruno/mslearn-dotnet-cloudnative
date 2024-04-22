@@ -1,4 +1,5 @@
-﻿using DataEntities;
+﻿using AIEntities;
+using DataEntities;
 using System.Text.Json;
 
 namespace Store.Services;
@@ -42,9 +43,10 @@ public class ProductService
 		return products ?? new List<Product>();
     }
 
-	public async Task<string> AISearch(string searchTerm)
+	public async Task<AISearchResponse> AISearch(string searchTerm)
     {
-        string? aiResponse = null;
+        AISearchResponse aiResponse = new AISearchResponse();
+		aiResponse.Response = "No response";
 		try
 		{
 	    	var response = await httpClient.GetAsync($"/api/aisearch/{searchTerm}");
@@ -55,7 +57,7 @@ public class ProductService
 
 		    if (response.IsSuccessStatusCode)
 		    {
-				aiResponse = response.Content.ToString();
+				aiResponse = await response.Content.ReadFromJsonAsync<AISearchResponse>();
 	   		 }
 		}
 		catch (Exception ex)
@@ -63,7 +65,7 @@ public class ProductService
 			_logger.LogError(ex, "Error during GetProducts.");
 		}
 
-		return aiResponse ?? "No response from AI.";
+		return aiResponse ?? null;
     }
     
 }
