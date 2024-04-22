@@ -3,6 +3,7 @@ using Microsoft.SemanticKernel;
 using Products.Data;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.EntityFrameworkCore;
+using AIEntities;
 
 
 #pragma warning disable SKEXP0003, SKEXP0001, SKEXP0010, SKEXP0011, SKEXP0050, SKEXP0052
@@ -56,15 +57,26 @@ public static class MemoryContext
         }
     }
 
-    public static async Task<string> Search(string search)
+    public static async Task<AISearchResponse> Search(string search, ProductDataContext db)
     {
-        var response = await memory.SearchAsync(MemoryCollectionName, search).FirstOrDefaultAsync();
+        AISearchResponse response = new AISearchResponse();
+        var searchQueryResult = await memory.SearchAsync(MemoryCollectionName, search).FirstOrDefaultAsync();
 
         // build a complete string with all the information from the response
-        var result = @$"{response.Metadata.Description} \n" +
-            @$"Product Id: {response.Metadata.Id} \n" +
-            @$"Relevance: {response.Relevance}";
-        return result;       
-        
+        var result = @$"{searchQueryResult.Metadata.Description} \n" +
+            @$"Product Id: {searchQueryResult.Metadata.Id} \n" +
+            @$"Relevance: {searchQueryResult.Relevance}";
+        response.Response = result;
+
+        // get the 1st product
+        var prodId = searchQueryResult.Metadata.Id;
+        var productRelated = await db.Product.FirstOrDefaultAsync(p => p.Id == int.Parse(prodId));
+
+        // create a list of products and add the product
+        response.Products = new List<DataEntities.Product>();
+        response.Products.Add(productRelated);
+
+        return response;
+
     }
 }

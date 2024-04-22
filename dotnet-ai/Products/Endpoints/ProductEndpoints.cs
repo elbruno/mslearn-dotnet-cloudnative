@@ -72,7 +72,7 @@ public static class ProductEndpoints
         // create a new endpoint in the route /AISearch
         routes.MapGet("/api/aisearchsimple/{search}", async (string search, ProductDataContext db) =>
         {
-            var result = await Products.Data.MemoryContext.Search(search);
+            var result = await Products.Data.MemoryContext.Search(search, db);
             return result != null ? Results.Ok(result) : Results.NotFound();
         })
         .WithName("AiSearchSimple")
@@ -82,14 +82,8 @@ public static class ProductEndpoints
         // create a new endpoint in the route /AISearch
         routes.MapGet("/api/aisearch/{search}", async (string search, ProductDataContext db) =>
         {
-            var result = await Products.Data.MemoryContext.Search(search);
-
-            AISearchResponse response = new AISearchResponse
-            {
-                Response = result
-            };
-
-            return Results.Ok(response);
+            var result = await Products.Data.MemoryContext.Search(search, db);
+            return Results.Ok(result);
         })
         .WithName("AiSearch")
         .Produces<AISearchResponse>(StatusCodes.Status200OK)
