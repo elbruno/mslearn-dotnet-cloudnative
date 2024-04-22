@@ -1,4 +1,5 @@
-﻿using DataEntities;
+﻿using AIEntities;
+using DataEntities;
 using Microsoft.EntityFrameworkCore;
 using Products.Data;
 
@@ -6,7 +7,7 @@ namespace Products.Endpoints;
 
 public static class ProductEndpoints
 {
-    public static async void MapProductEndpoints (this IEndpointRouteBuilder routes)
+    public static async void MapProductEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/Product");
 
@@ -17,7 +18,7 @@ public static class ProductEndpoints
         .WithName("GetAllProducts")
         .Produces<List<Product>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async  (int id, ProductDataContext db) =>
+        group.MapGet("/{id}", async (int id, ProductDataContext db) =>
         {
             return await db.Product.AsNoTracking()
                 .FirstOrDefaultAsync(model => model.Id == id)
@@ -29,7 +30,7 @@ public static class ProductEndpoints
         .Produces<Product>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async  (int id, Product product, ProductDataContext db) =>
+        group.MapPut("/{id}", async (int id, Product product, ProductDataContext db) =>
         {
             var affected = await db.Product
                 .Where(model => model.Id == id)
@@ -51,12 +52,12 @@ public static class ProductEndpoints
         {
             db.Product.Add(product);
             await db.SaveChangesAsync();
-            return Results.Created($"/api/Product/{product.Id}",product);
+            return Results.Created($"/api/Product/{product.Id}", product);
         })
         .WithName("CreateProduct")
         .Produces<Product>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async  (int id, ProductDataContext db) =>
+        group.MapDelete("/{id}", async (int id, ProductDataContext db) =>
         {
             var affected = await db.Product
                 .Where(model => model.Id == id)
@@ -69,13 +70,29 @@ public static class ProductEndpoints
         .Produces(StatusCodes.Status404NotFound);
 
         // create a new endpoint in the route /AISearch
-        routes.MapGet("/api/aisearch/{search}", async (string search, ProductDataContext db) =>
+        routes.MapGet("/api/aisearchsimple/{search}", async (string search, ProductDataContext db) =>
         {
             var result = await Products.Data.MemoryContext.Search(search);
             return result != null ? Results.Ok(result) : Results.NotFound();
         })
-        .WithName("AiSearch")
+        .WithName("AiSearchSimple")
         .Produces<string>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+        // create a new endpoint in the route /AISearch
+        routes.MapGet("/api/aisearch/{search}", async (string search, ProductDataContext db) =>
+        {
+            var result = await Products.Data.MemoryContext.Search(search);
+
+            AISearchResponse response = new AISearchResponse
+            {
+                Response = result
+            };
+
+            return Results.Ok(response);
+        })
+        .WithName("AiSearch")
+        .Produces<AISearchResponse>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
     }
 }

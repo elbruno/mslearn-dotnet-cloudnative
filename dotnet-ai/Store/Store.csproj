@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataEntities\DataEntities.csproj" />
+    <ProjectReference Include="..\AIEntities\AIEntities.csproj" />
   </ItemGroup>
 
 </Project>
