@@ -13,20 +13,13 @@
 
 <p>Use AI to ask questions some of our amazing outdoor products that you can purchase.</p>
 
-<!-- add a label , a textbox and a button to perform a smart search -->
 <div class="form-group">
     <label for="search">Type your question:</label>
-    
-    <!-- group the input and the button in an horizontal group -->
     <div class="input-group" >
         <input css type="text" id="search" class="form-control" @bind="searchTerm" />
-        <button id="btnSearch" class="btn btn-primary" @onclick="OnPost">Search 32</button>
+        <button id="btnSearch" class="btn btn-primary" @onclick="OnPost" type="submit">Ask ...</button>
     </div>
-
-    <!-- add a separator the responses -->
     <hr />
-    <p>Response:</p>
-    <!-- create a paragrpah with a quote class style -->
     <p class="quote">@aiResponse</p>
 </div>
 

@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "description": "Generate human friendly response for the user query",
+  "models": [
+    {
+      "max_tokens": 150,
+      "temperature": 0.9,
+      "top_p": 0.5,
+      "presence_penalty": 0.2,
+      "frequency_penalty": 0.3
+    }
+  ],
+  "input": {
+    "parameters": [
+      {
+        "name": "response",
+        "description": "search response",
+        "defaultValue": ""
+      },
+      {
+        "name": "productid",
+        "description": "product id from the search",
+        "defaultValue": ""
+      }
+      ,
+      {
+        "name": "question",
+        "description": "question asked by the user",
+        "defaultValue": ""
+      }
+    ]
+  }
+}
